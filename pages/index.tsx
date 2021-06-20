@@ -43,21 +43,21 @@ export default function Home(props: { drink: Drink }) {
 }
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  const cocktailKey = new Date().toDateString()
+  const cocktailKey = new Date().toISOString().split('T')[0] //format yyyy-mm-dd
   const expires = process.env.EXPIRES_IN
     ? parseInt(process.env.EXPIRES_IN, 10)
     : 60 * 60 * 24
 
   const fetcher = async () => {
-    const drinks = await fetch('http://localhost:3000/api/drinks')
-    const drinksJson = await drinks.json()
-    return drinksJson
+    const response = await fetch('http://localhost:3000/api/drinks')
+    const drinksJson = await response.json()
+    return drinksJson.drinks[0]
   }
   console.log('cocktailKey', cocktailKey)
   const response = await cache.fetch(cocktailKey, fetcher, expires)
   return {
     props: {
-      drink: response.drinks[0],
+      drink: response,
     },
   }
 }
