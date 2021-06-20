@@ -21,6 +21,9 @@
   max-width: calc(100vw - 10px);
 }
 
+.alignLeft {
+  align-self: flex-start;
+}
 @media screen and (min-width: 1024px) {
   .container {
     flex-direction: row;
